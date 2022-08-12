@@ -1,6 +1,7 @@
 package com.zerobase.fastlms;
 
 
+import com.zerobase.fastlms.member.repository.MemberRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 

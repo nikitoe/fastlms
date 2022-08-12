@@ -1,15 +1,17 @@
-package com.zerobase.fastlms.member;
+package com.zerobase.fastlms.member.controller;
 
+import com.zerobase.fastlms.member.model.MemberInput;
+import com.zerobase.fastlms.member.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+@RequiredArgsConstructor
 @Controller
 public class MemberController {
 
+    private final MemberService memberService;
 
     //@RequestMapping(value = "/member/register", method = RequestMethod.GET)
     @GetMapping("/member/register")
@@ -20,14 +22,10 @@ public class MemberController {
 
     //@RequestMapping(value = "/member/register", method = RequestMethod.POST)
     @PostMapping("/member/register")
-    public String rigisterSubmit(HttpServletRequest request,
-                                 HttpServletResponse response,
-                                 MemberInput parameter
-    ) {
+    public String registerSubmit(MemberInput parameter) {
 
-        System.out.println(parameter.toString());
-
-        return "/member/register";
+        boolean result = memberService.register(parameter);
+        return "/member/register_complete";
     }
 
 }
