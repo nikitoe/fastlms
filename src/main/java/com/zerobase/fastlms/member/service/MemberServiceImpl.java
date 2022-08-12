@@ -7,24 +7,34 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
 
+    /**
+     * 회원 가입
+     */
     @Override
-    public boolean register(MemberInput memberInput) {
+    public boolean register(MemberInput parameter) {
+
+        Optional<Member> optionalMember = memberRepository.findById(parameter.getUserId());
+        if(optionalMember.isPresent()){
+            // 현재 userId에 해당하는 데이터 존재
+            return false;
+        }
 
         Member member = new Member();
-        member.setUserId(memberInput.getUserId());
-        member.setUserName(memberInput.getUserName());
-        member.setPassword(memberInput.getPassword());
-        member.setPhone(memberInput.getPhone());
+        member.setUserId(parameter.getUserId());
+        member.setUserName(parameter.getUserName());
+        member.setPassword(parameter.getPassword());
+        member.setPhone(parameter.getPhone());
         member.setRegDt(LocalDateTime.now());
         memberRepository.save(member);
 
-        return false;
+        return true;
     }
 }
