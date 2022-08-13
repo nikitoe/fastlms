@@ -25,7 +25,8 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean register(MemberInput parameter) {
 
-        Optional<Member> optionalMember = memberRepository.findById(parameter.getUserId());
+        Optional<Member> optionalMember =
+                memberRepository.findById(parameter.getUserId());
         if (optionalMember.isPresent()) {
             // 현재 userId에 해당하는 데이터 존재
             return false;
@@ -33,14 +34,15 @@ public class MemberServiceImpl implements MemberService {
 
         String uuid = UUID.randomUUID().toString();
 
-        Member member = new Member();
-        member.setUserId(parameter.getUserId());
-        member.setUserName(parameter.getUserName());
-        member.setPassword(parameter.getPassword());
-        member.setPhone(parameter.getPhone());
-        member.setRegDt(LocalDateTime.now());
-        member.setEmailAuthYn(false);
-        member.setEmailAuthKey(uuid);
+        Member member = Member.builder()
+                .userId(parameter.getUserId())
+                .userName(parameter.getUserName())
+                .password(parameter.getPassword())
+                .phone(parameter.getPhone())
+                .regDt(LocalDateTime.now())
+                .emailAuthYn(false)
+                .emailAuthKey(uuid)
+                .build();
         memberRepository.save(member);
 
         String email = parameter.getUserId();
