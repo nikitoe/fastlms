@@ -1,4 +1,4 @@
-package com.zerobase.fastlms;
+package com.zerobase.fastlms.main.controller;
 
 
 import com.zerobase.fastlms.components.MailComponents;
