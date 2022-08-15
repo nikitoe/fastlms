@@ -40,6 +40,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/"
                         ,"/member/register"
                         ,"/member/email-auth"
+                        ,"/member/find/password"
+                        ,"/member/reset/password"
                 )
                 .permitAll();   // 해당 주소에대해 접근 가능하도록
 
