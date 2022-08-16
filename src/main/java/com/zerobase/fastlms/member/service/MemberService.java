@@ -1,7 +1,7 @@
 package com.zerobase.fastlms.member.service;
 
 import com.zerobase.fastlms.admin.dto.MemberDto;
-import com.zerobase.fastlms.member.entity.Member;
+import com.zerobase.fastlms.admin.model.MemberParam;
 import com.zerobase.fastlms.member.model.MemberInput;
 import com.zerobase.fastlms.member.model.ResetPasswordInput;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -40,5 +40,5 @@ public interface MemberService extends UserDetailsService {
      * 회원의 목록 리턴 (관리자에서만 사용 가능)
      * @return
      */
-    List<MemberDto> list();
+    List<MemberDto> list(MemberParam parameter);
 }
