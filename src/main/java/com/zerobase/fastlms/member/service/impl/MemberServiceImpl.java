@@ -1,5 +1,7 @@
 package com.zerobase.fastlms.member.service.impl;
 
+import com.zerobase.fastlms.admin.dto.MemberDto;
+import com.zerobase.fastlms.admin.mapper.MemberMapper;
 import com.zerobase.fastlms.components.MailComponents;
 import com.zerobase.fastlms.member.entity.Member;
 import com.zerobase.fastlms.member.exception.MemberNotEmailAuthException;
@@ -28,6 +30,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final MailComponents mailComponents;
+    private final MemberMapper memberMapper;
 
     /**
      * 회원 가입
@@ -78,7 +81,7 @@ public class MemberServiceImpl implements MemberService {
 
         Member member = optionalMember.get();
 
-        if(member.isEmailAuthYn()){
+        if (member.isEmailAuthYn()) {
             return false;
         }
         member.setEmailAuthYn(true);
@@ -133,10 +136,10 @@ public class MemberServiceImpl implements MemberService {
         Member member = optionalMember.get();
 
         // 초기화 날짜 유효한지 확인
-        if(member.getResetPasswordLimitDt() == null){
+        if (member.getResetPasswordLimitDt() == null) {
             throw new RuntimeException(" 유효한 날짜가 아닙니다. ");
         }
-        if(member.getResetPasswordLimitDt().isBefore(LocalDateTime.now())){
+        if (member.getResetPasswordLimitDt().isBefore(LocalDateTime.now())) {
             throw new RuntimeException(" 유효한 날짜가 아닙니다. ");
         }
 
@@ -162,10 +165,10 @@ public class MemberServiceImpl implements MemberService {
         Member member = optionalMember.get();
 
         // 초기화 날짜 유효한지 확인
-        if(member.getResetPasswordLimitDt() == null){
+        if (member.getResetPasswordLimitDt() == null) {
             throw new RuntimeException(" 유효한 날짜가 아닙니다. ");
         }
-        if(member.getResetPasswordLimitDt().isBefore(LocalDateTime.now())){
+        if (member.getResetPasswordLimitDt().isBefore(LocalDateTime.now())) {
             throw new RuntimeException(" 유효한 날짜가 아닙니다. ");
         }
 
@@ -173,9 +176,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<Member> list() {
+    public List<MemberDto> list() {
 
-        return memberRepository.findAll();
+        MemberDto parameter = new MemberDto();
+        List<MemberDto> list = memberMapper.selectList(parameter);
+
+        return list;
+        //return memberRepository.findAll();
     }
 
     @Override
@@ -196,7 +203,7 @@ public class MemberServiceImpl implements MemberService {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        if(member.isAdminYn()){
+        if (member.isAdminYn()) {
             grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
 
