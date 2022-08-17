@@ -21,10 +21,8 @@ public class AdminMemberController {
     public String list(Model model, MemberParam parameter) {
 
         parameter.init();
-        System.out.println("parameter 값 : " + parameter);
 
         List<MemberDto> members = memberService.list(parameter);
-
 
 
         long totalCount = 0;
@@ -46,5 +44,20 @@ public class AdminMemberController {
         model.addAttribute("pager", pageUtil.pager());
 
         return "admin/member/list";
+    }
+
+    @GetMapping("/admin/member/detail.do")
+    public String detail(Model model, MemberParam parameter) {
+
+        parameter.init();
+
+        System.out.println(parameter.getUserId());
+
+        MemberDto member = memberService.detail(parameter.getUserId());
+
+        model.addAttribute("member", member);
+
+
+        return "admin/member/detail";
     }
 }

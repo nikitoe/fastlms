@@ -183,7 +183,6 @@ public class MemberServiceImpl implements MemberService {
         long totalCount = memberMapper.selectListCount(parameter);
 
         List<MemberDto> list = memberMapper.selectList(parameter);
-        System.out.println("parameterService : " + parameter);
         if (!CollectionUtils.isEmpty(list)) {
             int i = 0;
             for (MemberDto x : list) {
@@ -195,6 +194,18 @@ public class MemberServiceImpl implements MemberService {
 
         return list;
         //return memberRepository.findAll();
+    }
+
+    @Override
+    public MemberDto detail(String userId) {
+        Optional<Member> optionalMember = memberRepository.findById(userId);
+        if(!optionalMember.isPresent()){
+            return null;
+        }
+
+        Member member = optionalMember.get();
+
+        return MemberDto.of(member);
     }
 
     @Override
