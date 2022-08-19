@@ -24,12 +24,12 @@ public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
     private final CourseMapper courseMapper;
 
-    private LocalDate getLocalDate(String value){
+    private LocalDate getLocalDate(String value) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        try{
+        try {
             return LocalDate.parse(value, formatter);
-        } catch (Exception e){
+        } catch (Exception e) {
         }
         return null;
     }
@@ -63,7 +63,7 @@ public class CourseServiceImpl implements CourseService {
 
         Optional<Course> optionalCourse = courseRepository.findById(parameter.getId());
 
-        if(!optionalCourse.isPresent()){
+        if (!optionalCourse.isPresent()) {
             // 수정할 데이터가 없음
             return false;
         }
@@ -107,5 +107,25 @@ public class CourseServiceImpl implements CourseService {
 
         return courseRepository.findById(id).map(CourseDto::of).orElse(null);
 
+    }
+
+    @Override
+    public boolean del(String idList) {
+
+        if (idList != null && idList.length() > 0) {
+
+            String[] ids = idList.split(",");
+            for (String x : ids) {
+                long id = 0L;
+                try {
+                    id = Long.parseLong(x);
+                } catch (Exception e) {
+                }
+                if (id > 0) {
+                    courseRepository.deleteById(id);
+                }
+            }
+        }
+        return true;
     }
 }

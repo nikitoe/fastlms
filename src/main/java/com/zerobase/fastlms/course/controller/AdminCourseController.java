@@ -53,7 +53,7 @@ public class AdminCourseController extends BaseController {
     public String add(Model model, HttpServletRequest request, CourseInput parameter) {
 
         // 카테ㅐ고리 정보를 내려줘야 함
-        model.addAttribute("category",categoryService.list());
+        model.addAttribute("category", categoryService.list());
 
 
         boolean editMode = request.getRequestURI().contains("/edit.do");
@@ -94,6 +94,14 @@ public class AdminCourseController extends BaseController {
         } else {
             boolean result = courseService.add(parameter);
         }
+
+        return "redirect:/admin/course/list.do";
+    }
+
+    @PostMapping("/admin/course/delete.do")
+    public String del(Model model, CourseInput parameter, HttpServletRequest request) {
+
+        boolean result = courseService.del(parameter.getIdList());
 
         return "redirect:/admin/course/list.do";
     }
