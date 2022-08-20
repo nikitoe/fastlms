@@ -36,7 +36,7 @@ public class CourseDto {
     public static CourseDto of(Course course) {
 
         return CourseDto.builder()
-                .id(course.getPrice())
+                .id(course.getId())
                 .categoryId(course.getCategoryId())
                 .imagePath(course.getImagePath())
                 .keyword(course.getKeyword())
