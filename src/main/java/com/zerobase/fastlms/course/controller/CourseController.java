@@ -1,5 +1,6 @@
 package com.zerobase.fastlms.course.controller;
 
+import com.zerobase.fastlms.admin.dto.CategoryDto;
 import com.zerobase.fastlms.admin.service.CategoryService;
 import com.zerobase.fastlms.course.dto.CourseDto;
 import com.zerobase.fastlms.course.model.CourseParam;
@@ -24,6 +25,17 @@ public class CourseController extends BaseController {
 
         List<CourseDto> list = courseService.frontList(parameter);
         model.addAttribute("list", list);
+
+        int courseTotalCount = 0;
+        List<CategoryDto> categoryList = categoryService.frontList(CategoryDto.builder().build());
+        if (categoryList != null) {
+            for (CategoryDto x : categoryList) {
+                courseTotalCount += x.getCourseCount();
+            }
+        }
+
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("courseTotalCount", courseTotalCount);
 
         return "course/index";
     }
