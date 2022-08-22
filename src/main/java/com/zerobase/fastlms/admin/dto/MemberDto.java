@@ -35,6 +35,11 @@ public class MemberDto {
     long totalCount;
     long seq;
 
+    // 우편번호 API 추가 컬럼
+    String zipcode;
+    String addr;
+    String addrDetail;
+
     public static MemberDto of(Member member) {
         return MemberDto.builder()
                 .userId(member.getUserId())
@@ -49,6 +54,9 @@ public class MemberDto {
                 .resetPasswordLimitDt(member.getResetPasswordLimitDt())
                 .adminYn(member.isAdminYn())
                 .userStatus(member.getUserStatus())
+                .zipcode(member.getZipcode())
+                .addr(member.getAddr())
+                .addrDetail(member.getAddrDetail())
                 .build();
     }
 

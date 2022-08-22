@@ -41,5 +41,10 @@ public class Member implements MemberCode{
 
     private String userStatus;  // 이용 가능 상태, 불가 상태
 
+    // 우편번호 API 추가 컬럼
+    private String zipcode;
+    private String addr;
+    private String addrDetail;
+
 
 }
