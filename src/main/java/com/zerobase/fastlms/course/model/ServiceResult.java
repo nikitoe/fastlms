@@ -5,12 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 public class ServiceResult {
 
     boolean result;
     String message;
 
+    public ServiceResult(){
+        result = true;
+    }
     public ServiceResult(boolean result, String message) {
         this.result = result;
         this.message = message;

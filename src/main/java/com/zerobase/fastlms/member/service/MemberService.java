@@ -2,6 +2,7 @@ package com.zerobase.fastlms.member.service;
 
 import com.zerobase.fastlms.admin.dto.MemberDto;
 import com.zerobase.fastlms.admin.model.MemberParam;
+import com.zerobase.fastlms.course.model.ServiceResult;
 import com.zerobase.fastlms.member.model.MemberInput;
 import com.zerobase.fastlms.member.model.ResetPasswordInput;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -55,4 +56,17 @@ public interface MemberService extends UserDetailsService {
      * 회원 비밀번호 초기화
      */
     boolean updatePassword(String userId, String password);
+
+    /**
+     * 회원 정보 수정
+     */
+
+    ServiceResult updateMember(MemberInput parameter);
+
+    /**
+     * 회원 정보 페이지내 비밀번호 변경 기능
+     */
+    ServiceResult updateMemberPassword(MemberInput parameter);
+
+
 }
