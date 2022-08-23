@@ -33,4 +33,16 @@
         limit #{pageStart}, #{pageEnd};
 
     </select>
+
+    <!-- userId에 해당하는 수강신청 정보 -->
+    <select id="selectMyListMyCourse" resultType="com.zerobase.fastlms.course.dto.TakeCourseDto">
+        select tc.*
+            , c.subject
+        from take_course tc
+            join course c on c.id = tc.course_id
+        where tc.user_id = #{userId}
+            <include refid="selectListWhere"></include>
+        order by reg_dt desc
+
+    </select>
 </mapper>
