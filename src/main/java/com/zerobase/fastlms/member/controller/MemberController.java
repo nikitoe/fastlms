@@ -191,4 +191,31 @@ public class MemberController {
         return "member/reset_password_result";
 
     }
+
+    @GetMapping("/member/withdraw")
+    public String memberWithdraw(Model model) {
+
+
+        return "member/withdraw";
+    }
+
+    @PostMapping("/member/withdraw")
+    public String memberWithdrawSubmit(
+            Model model
+            , Principal principal
+            , MemberInput parameter
+    ) {
+        String userId = principal.getName();
+
+        ServiceResult result = memberService.withdraw(userId, parameter.getPassword());
+        if (!result.isResult()) {
+            model.addAttribute("message", result.getMessage());
+            return "common/error";
+        }
+
+        return "redirect:/member/logout";
+    }
 }
+
+
+
