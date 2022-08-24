@@ -33,6 +33,10 @@ public class CourseDto {
     long totalCount;
     long seq;
 
+    // 파일 첨부
+    String filename;
+    String urlFilename;
+
     public static CourseDto of(Course course) {
 
         return CourseDto.builder()
@@ -48,6 +52,8 @@ public class CourseDto {
                 .saleEndDt(course.getSaleEndDt())
                 .regDt(course.getRegDt())
                 .udDt(course.getUdDt())
+                .filename(course.getFilename())
+                .urlFilename(course.getUrlFilename())
                 .build();
     }
 
