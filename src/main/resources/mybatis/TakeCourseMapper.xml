@@ -5,14 +5,18 @@
 <mapper namespace="com.zerobase.fastlms.course.mapper.TakeCourseMapper">
 
     <sql id="selectListWhere">
-
+        <if test="searchCourseId > 0">
+            and c.id = #{searchCourseId}
+        </if>
 
     </sql>
 
     <select id="selectListCount" resultType="long">
         select count(*)
-        from take_course
-        where 1 = 1
+        from take_course tc
+            join course c on c.id = tc.course_id
+            join member m on tc.user_id = m.user_id
+        where 1=1
             <include refid="selectListWhere"></include>
 
     </select>
@@ -41,7 +45,6 @@
         from take_course tc
             join course c on c.id = tc.course_id
         where tc.user_id = #{userId}
-            <include refid="selectListWhere"></include>
         order by reg_dt desc
 
     </select>
