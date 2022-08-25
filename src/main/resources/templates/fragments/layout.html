@@ -16,6 +16,9 @@
             <a href="/member/login">로그인</a>
             |
             <a href="/member/logout">로그아웃</a>
+            <span th:if="${session.userId != null}">
+                | <span th:text="${session.userId}"></span>
+            </span>
         </div>
         <hr/>
     </div>
