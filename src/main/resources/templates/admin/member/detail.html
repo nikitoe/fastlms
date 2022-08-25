@@ -12,6 +12,36 @@
         .detail table th, .detail table td {
             border: solid 1px #000;
         }
+
+        .history table {
+            width: 100%;
+            border-top: 1px solid #444444;
+            border-collapse: collapse;
+        }
+        .history table th, .history table td {
+            border: 1px solid #b4b4b4;
+            padding: 10px;
+            text-align: center;
+        }
+        .history table thead tr {
+            background-color: #00A972;
+            color: #ffffff;
+        }
+        .history table tbody tr:nth-child(2n) {
+            background-color: #f2f2f2;
+        }
+        .history table tbody tr:nth-child(2n+1) {
+            background-color: #ffffff;
+        }
+        .pager {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .pager a.on {
+            font-weight: bold;
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -93,6 +123,31 @@
     </div>
     <div>
         <a href="list.do">목록</a>
+    </div>
+    <div class="history">
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>로그인 일자</th>
+                        <th>접속 IP</th>
+                        <th>접속 UserAgent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each=" x : ${memberLogHistories}">
+                        <td th:text="${x.seq}"></td>
+                        <td th:text="${x.loginDtText}"></td>
+                        <td th:text="${x.ipAddr}"></td>
+                        <td th:text="${x.userAgent}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+    <div class="pager" th:utext="${pager}">
     </div>
 
 </body>

@@ -14,4 +14,16 @@ public class BaseController {
 
         return pageUtil.pager();
     }
+
+    public String getPageHtmlHistory(
+            long totalCount,
+            long pageSize,
+            long pageIndex,
+            String queryString,
+            String userId
+    ) {
+        PageUtil pageUtil = new PageUtil(totalCount, pageSize, pageIndex, queryString,userId);
+
+        return pageUtil.pager();
+    }
 }

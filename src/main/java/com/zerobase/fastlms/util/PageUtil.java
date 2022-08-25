@@ -18,7 +18,7 @@ public class PageUtil {
     private long pageBlockSize = 10;
 
     /**
-     *  현재 페이지 번호
+     * 현재 페이지 번호
      */
     private long pageIndex;
 
@@ -43,6 +43,8 @@ public class PageUtil {
      */
     private String queryString;
 
+    private String userId;
+
     /*
     전채개수: 156
     한페이지에 나오는 개수는: 10
@@ -58,6 +60,14 @@ public class PageUtil {
         this.pageSize = pageSize;
         this.pageIndex = pageIndex;
         this.queryString = queryString;
+    }
+
+    public PageUtil(long totalCount, long pageSize, long pageIndex, String queryString, String userId) {
+        this.totalCount = totalCount;
+        this.pageSize = pageSize;
+        this.pageIndex = pageIndex;
+        this.queryString = queryString;
+        this.userId = userId;
     }
 
     public PageUtil(long totalCount, long pageIndex, String queryString) {
@@ -85,6 +95,37 @@ public class PageUtil {
 
         StringBuilder sb = new StringBuilder();
 
+        if (userId != null) {
+            long previousPageIndex = startPage > 1 ? startPage - 1 : 1;
+            long nextPageIndex = endPage < totalBlockCount ? endPage + 1 : totalBlockCount;
+
+            String addQueryString = "";
+            if (queryString != null && queryString.length() > 0) {
+                addQueryString = "&" + queryString;
+            }
+
+            sb.append(String.format("<a href='?userId=%s&pageIndex=%d%s'>&lt;&lt;</a>", userId,1, addQueryString));
+            sb.append(System.lineSeparator());
+            sb.append(String.format("<a href='?userId=%s&pageIndex=%d%s'>&lt;</a>", userId,previousPageIndex, addQueryString));
+            sb.append(System.lineSeparator());
+
+            for (long i = startPage; i <= endPage; i++) {
+                if (i == pageIndex) {
+                    sb.append(String.format("<a class='on' href='?userId=%s&pageIndex=%d%s'>%d</a>",userId, i, addQueryString, i));
+                } else {
+                    sb.append(String.format("<a href='?userId=%s&pageIndex=%d%s'>%d</a>", userId,i, addQueryString, i));
+                }
+                sb.append(System.lineSeparator());
+            }
+
+            sb.append(String.format("<a href='?userId=%s&pageIndex=%d%s'>&gt;</a>", userId,nextPageIndex, addQueryString));
+            sb.append(System.lineSeparator());
+            sb.append(String.format("<a href='?userId=%s&pageIndex=%d%s'>&gt;&gt;</a>", userId,totalBlockCount, addQueryString));
+            sb.append(System.lineSeparator());
+
+            return sb.toString();
+        }
+
         long previousPageIndex = startPage > 1 ? startPage - 1 : 1;
         long nextPageIndex = endPage < totalBlockCount ? endPage + 1 : totalBlockCount;
 
@@ -98,7 +139,7 @@ public class PageUtil {
         sb.append(String.format("<a href='?pageIndex=%d%s'>&lt;</a>", previousPageIndex, addQueryString));
         sb.append(System.lineSeparator());
 
-        for(long i = startPage; i<= endPage; i++) {
+        for (long i = startPage; i <= endPage; i++) {
             if (i == pageIndex) {
                 sb.append(String.format("<a class='on' href='?pageIndex=%d%s'>%d</a>", i, addQueryString, i));
             } else {
@@ -134,7 +175,6 @@ public class PageUtil {
             endPage = totalBlockCount;
         }
     }
-
 
 
 }

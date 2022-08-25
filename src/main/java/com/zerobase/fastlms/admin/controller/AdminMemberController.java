@@ -1,9 +1,11 @@
 package com.zerobase.fastlms.admin.controller;
 
 import com.zerobase.fastlms.admin.dto.MemberDto;
+import com.zerobase.fastlms.admin.dto.MemberLoginHistoryDto;
 import com.zerobase.fastlms.admin.model.MemberParam;
 import com.zerobase.fastlms.admin.model.MemberInput;
 import com.zerobase.fastlms.course.controller.BaseController;
+import com.zerobase.fastlms.member.service.MemberLoginHistoryService;
 import com.zerobase.fastlms.member.service.MemberService;
 import com.zerobase.fastlms.util.PageUtil;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,8 @@ import java.util.List;
 public class AdminMemberController extends BaseController {
 
     private final MemberService memberService;
+
+    private final MemberLoginHistoryService memberLoginHistoryService;
 
     @GetMapping("/admin/member/list.do")
     public String list(Model model, MemberParam parameter) {
@@ -39,6 +43,7 @@ public class AdminMemberController extends BaseController {
                 queryString
         );
 
+
         model.addAttribute("list", members);
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("pager", pagerHtml);
@@ -52,13 +57,34 @@ public class AdminMemberController extends BaseController {
         parameter.init();
 
         MemberDto member = memberService.detail(parameter.getUserId());
+
+        List<MemberLoginHistoryDto> memberLogHistories
+                = memberLoginHistoryService.selectList(parameter);
+
+        long totalCount = 0;
+        if (memberLogHistories != null && memberLogHistories.size() > 0) {
+            totalCount = memberLogHistories.get(0).getTotalCount();
+        }
+
+        String queryString = parameter.getQueryString();
+        String pagerHtml = getPageHtmlHistory(
+                totalCount,
+                parameter.getPageSize(),
+                parameter.getPageIndex(),
+                queryString,
+                parameter.getUserId()
+        );
+
         model.addAttribute("member", member);
+        model.addAttribute("memberLogHistories", memberLogHistories);
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("pager", pagerHtml);
 
         return "admin/member/detail";
     }
 
     @PostMapping("/admin/member/status.do")
-    public String status(Model model, MemberInput parameter){
+    public String status(Model model, MemberInput parameter) {
 
         boolean result =
                 memberService.updateStatus(parameter.getUserId(), parameter.getUserStatus());
@@ -66,7 +92,7 @@ public class AdminMemberController extends BaseController {
     }
 
     @PostMapping("/admin/member/password.do")
-    public String password(Model model, MemberInput parameter){
+    public String password(Model model, MemberInput parameter) {
 
         boolean result =
                 memberService.updatePassword(parameter.getUserId(), parameter.getPassword());
