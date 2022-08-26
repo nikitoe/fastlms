@@ -17,4 +17,7 @@ public class BannerInput {
     String urlFilename;
     LocalDateTime regDt;
     LocalDateTime udDt;
+
+    // 삭제를 위한
+    String idList;
 }
