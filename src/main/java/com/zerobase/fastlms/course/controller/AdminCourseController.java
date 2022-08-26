@@ -76,9 +76,8 @@ public class AdminCourseController extends BaseController {
                 return "common/error";
             }
             detail = existcourse;
-
-
         }
+
         model.addAttribute("detail", detail);
         model.addAttribute("editMode", editMode);
 

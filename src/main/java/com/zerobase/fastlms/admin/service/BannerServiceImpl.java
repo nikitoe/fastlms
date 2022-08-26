@@ -85,5 +85,35 @@ public class BannerServiceImpl implements BannerService {
         return true;
     }
 
+    @Override
+    public BannerDto getById(long id) {
+
+        return bannerRepository.findById(id).map(BannerDto::of).orElse(null);
+    }
+
+    @Override
+    public ServiceResult set(BannerInput parameter) {
+
+        Optional<Banner> optionalBanner = bannerRepository.findById(parameter.getId());
+        if (!optionalBanner.isPresent()) {
+            return new ServiceResult(false, "수정할 배너정보가 존재 하지않습니다.");
+        }
+
+        Banner banner = optionalBanner.get();
+
+        banner.setAltText(parameter.getAltText());
+        banner.setFilename(parameter.getFilename());
+        banner.setLinkUrl(parameter.getLinkUrl());
+        banner.setSortValue(parameter.getSortValue());
+        banner.setTarget(parameter.getTarget());
+        banner.setUrlFilename(parameter.getUrlFilename());
+        banner.setOpenYn(parameter.isOpenYn());
+        banner.setUdDt(LocalDateTime.now());
+
+        bannerRepository.save(banner);
+
+        return new ServiceResult();
+    }
+
 
 }

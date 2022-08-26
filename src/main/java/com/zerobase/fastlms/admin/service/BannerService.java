@@ -23,4 +23,14 @@ public interface BannerService {
      * 배너 정보 삭제(관리자)
      */
     boolean del(String idList);
+
+    /**
+     * 상세 배너 정보 존재 여부 (관리자)
+     */
+    BannerDto getById(long id);
+
+    /**
+     * 상세 배너 정보(관리자)
+     */
+    ServiceResult set(BannerInput parameter);
 }

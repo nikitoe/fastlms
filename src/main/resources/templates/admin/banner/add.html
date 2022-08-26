@@ -33,11 +33,6 @@
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
             crossorigin="anonymous">
     </script>
-    <script>
-        $(document).ready(function() {
-
-        });
-    </script>
 </head>
 <body>
     <h1> 배너 관리 - 배너 등록</h1>
@@ -49,7 +44,8 @@
                     <tr>
                         <th> 배너명 </th>
                         <td>
-                            <input type="text"
+                            <input th:value="${detail.altText}"
+                                   type="text"
                                    name="altText"
                                    required
                                    placeholder="배너명 입력"/>
@@ -64,9 +60,10 @@
                     <tr>
                         <th> 링크주소 </th>
                         <td>
-                                <input name="linkUrl"
-                                          required
-                                          placeholder="링크 주소 입력" />
+                                <input th:value="${detail.linkUrl}"
+                                       name="linkUrl"
+                                       required
+                                       placeholder="링크 주소 입력" />
                         </td>
                     </tr>
                     <tr>
@@ -74,15 +71,16 @@
                         <td>
                             <select name="target" required>
                                 <option value=""> 오픈 방법 선택 </option>
-                                <option value="_blank">blank</option>
-                                <option value="_self">self</option>
+                                <option th:selected="${detail.target eq '_blank'}" value="_blank">blank</option>
+                                <option th:selected="${detail.target eq '_self'}" value="_self">self</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <th> 정렬 순서 </th>
                         <td>
-                            <input type="text"
+                            <input th:value="${detail.sortValue}"
+                                   type="text"
                                    name="sortValue"
                                    required
                                    placeholder="정렬 순서 입력"/>
@@ -91,7 +89,8 @@
                     <tr>
                         <th> 공개여부 </th>
                         <td id="check">
-                            <input type="checkbox"
+                            <input th:checked="${detail.openYn eq true}"
+                                   type="checkbox"
                                    name="openYn"
                                    placeholder="판매가 입력"/>공개
                         </td>
@@ -99,8 +98,8 @@
                 </tbody>
             </table>
             <div class="buttons">
-<!--                <button th:if="${editMode}" type="submit"> 강좌 수정 하기</button>-->
-                <button type="submit"> 배너 등록 하기</button>
+                <button th:if="${editMode}" type="submit"> 배너 수정 하기</button>
+                <button th:if="${!editMode}" type="submit"> 배너 등록 하기</button>
                 <a href="/admin/banner/list.do"> 목록 이동 </a>
             </div>
         </form>

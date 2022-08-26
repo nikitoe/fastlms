@@ -5,7 +5,7 @@ import com.zerobase.fastlms.admin.model.BannerInput;
 import com.zerobase.fastlms.admin.model.BannerParam;
 import com.zerobase.fastlms.admin.service.BannerService;
 import com.zerobase.fastlms.course.controller.BaseController;
-import com.zerobase.fastlms.course.model.CourseInput;
+import com.zerobase.fastlms.course.dto.CourseDto;
 import com.zerobase.fastlms.course.model.ServiceResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,9 +58,27 @@ public class AdminBannerController extends BaseController {
         return "admin/banner/list";
     }
 
-    @GetMapping("/admin/banner/add.do")
-    public String add(Model model) {
+    @GetMapping(value={"/admin/banner/add.do","/admin/banner/edit.do"})
+    public String add(Model model,
+                      HttpServletRequest request,
+                      BannerInput parameter) {
 
+        boolean editMode = request.getRequestURI().contains("/edit.do");
+        BannerDto detail = new BannerDto();
+
+        if (editMode) {
+            long id = parameter.getId();
+            BannerDto existBanner = bannerService.getById(id);
+            if (existBanner == null) {
+                // error 처리
+                model.addAttribute("message", "배너정보가 존재하지 않습니다.");
+                return "common/error";
+            }
+            detail = existBanner;
+        }
+
+        model.addAttribute("detail",detail);
+        model.addAttribute("editMode",editMode);
 
         return "admin/banner/add";
     }
@@ -106,10 +124,11 @@ public class AdminBannerController extends BaseController {
     }
 
 
-    @PostMapping("/admin/banner/add.do")
+    @PostMapping(value = {"/admin/banner/add.do", "/admin/banner/edit.do"})
     public String addSubmit(Model model,
                             BannerInput parameter,
-                            MultipartFile file) {
+                            MultipartFile file,
+                            HttpServletRequest request) {
 
         String saveFilename = "";
         String urlFilename = "";
@@ -142,24 +161,36 @@ public class AdminBannerController extends BaseController {
         parameter.setFilename(saveFilename);
         parameter.setUrlFilename(urlFilename);
 
-        ServiceResult result = bannerService.add(parameter);
-        if (!result.isResult()) {
-            model.addAttribute("message", result.getMessage());
-            return "common/error";
-        }
 
-        System.out.println(parameter);
+        boolean editMode = request.getRequestURI().contains("/edit.do");
+        if (editMode) {
+            long id = parameter.getId();
+            BannerDto existBanner = bannerService.getById(id);
+            if (existBanner == null) {
+                model.addAttribute("message", " 해당 배너정보가 존재 하지 않습니다.");
+                return "common/error";
+            }
+            ServiceResult result = bannerService.set(parameter);
+            if (!result.isResult()) {
+                model.addAttribute("message", result.getMessage());
+                return "common/error";
+            }
+        } else {
+            ServiceResult result = bannerService.add(parameter);
+            if (!result.isResult()) {
+                model.addAttribute("message", result.getMessage());
+                return "common/error";
+            }
+        }
 
         return "redirect:/admin/banner/list.do";
     }
 
     @PostMapping("/admin/banner/delete.do")
-    public String del(Model model, BannerInput parameter, HttpServletRequest request) {
+    public String del(BannerInput parameter) {
 
         boolean result = bannerService.del(parameter.getIdList());
 
         return "redirect:/admin/banner/list.do";
     }
-
-
 }
