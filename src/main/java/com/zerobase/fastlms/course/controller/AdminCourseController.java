@@ -60,7 +60,7 @@ public class AdminCourseController extends BaseController {
     @GetMapping(value = {"/admin/course/add.do", "/admin/course/edit.do"})
     public String add(Model model, HttpServletRequest request, CourseInput parameter) {
 
-        // 카테ㅐ고리 정보를 내려줘야 함
+        // 카테고리 정보를 내려줘야 함
         model.addAttribute("category", categoryService.list());
 
 
