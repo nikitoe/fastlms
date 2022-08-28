@@ -115,5 +115,13 @@ public class BannerServiceImpl implements BannerService {
         return new ServiceResult();
     }
 
+    @Override
+    public List<BannerDto> frontList() {
+
+        List<Banner> bannerList = bannerRepository.findAll();
+
+        return BannerDto.of(bannerList);
+    }
+
 
 }

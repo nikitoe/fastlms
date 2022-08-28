@@ -33,4 +33,10 @@ public interface BannerService {
      * 상세 배너 정보(관리자)
      */
     ServiceResult set(BannerInput parameter);
+
+    /**
+     * 프론트 배너 정보
+     * @return
+     */
+    List<BannerDto> frontList();
 }
